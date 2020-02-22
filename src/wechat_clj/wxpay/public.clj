@@ -1,6 +1,6 @@
 (ns wechat-clj.wxpay.public
-  (:import [wechat_clj JavaHelper]
-           [java.util UUID]))
+  (:require [wechat-clj.util :as u])
+  (:import [java.util UUID]))
 
 ;; TODO: 这里写一个cljc宏,生成所有的前端的函数,重新命名为下划线的名字,加上success & erro的fn作为参数
 (def default-jsapi-list
@@ -63,7 +63,7 @@
                         "&noncestr=" noncestr
                         "&timestamp=" timestamp
                         "&url=" url)
-                    JavaHelper/SHA1)]
+                    u/sha1)]
     {:debug debug
      :appId appid
      :timestamp timestamp
