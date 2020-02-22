@@ -1,6 +1,2 @@
-(ns wechat-clj.core)
-
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(ns wechat-clj.core
+  (:require [wechat-clj.oauth2]))
