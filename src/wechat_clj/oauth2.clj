@@ -49,3 +49,10 @@
                 {:op-fn op-fn
                  :access_token access_token
                  :openid openid}))}))
+
+(comment
+  (get-wxuserinfo-by-oauth2code
+    {:code code
+     :op-fn (fn [{:keys [openid] :as wxuser}]
+              ;; ...
+              )}))
