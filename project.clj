@@ -8,4 +8,5 @@
                  [cheshire "5.10.0"]
                  [com.github.wxpay/wxpay-sdk "0.0.3"]
                  [clj-http "3.10.0"]]
+  :java-source-paths ["src/java"]
   :repl-options {:init-ns wechat-clj.core})
