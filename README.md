@@ -1,5 +1,12 @@
 # wechat-clj微信开发全家桶: 微信支付,网络授权,加密库等
 
+- [wechat-clj微信开发全家桶: 微信支付,网络授权,加密库等](#wechat-clj%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E5%85%A8%E5%AE%B6%E6%A1%B6-%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E7%BD%91%E7%BB%9C%E6%8E%88%E6%9D%83%E5%8A%A0%E5%AF%86%E5%BA%93%E7%AD%89)
+  - [Features](#features)
+  - [Usage](#usage)
+    - [小程序`wx.login`登陆使用后端的jscode2session获取微信信息](#%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxlogin%E7%99%BB%E9%99%86%E4%BD%BF%E7%94%A8%E5%90%8E%E7%AB%AF%E7%9A%84jscode2session%E8%8E%B7%E5%8F%96%E5%BE%AE%E4%BF%A1%E4%BF%A1%E6%81%AF)
+    - [微信服务号jsapi签名`wx.init` (用于微信网页支付和分享等的初始化)](#%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7jsapi%E7%AD%BE%E5%90%8Dwxinit-%E7%94%A8%E4%BA%8E%E5%BE%AE%E4%BF%A1%E7%BD%91%E9%A1%B5%E6%94%AF%E4%BB%98%E5%92%8C%E5%88%86%E4%BA%AB%E7%AD%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96)
+  - [License](#license)
+
 ## Features
 
 * 微信支付的后端相关加密,包含小程序和微信服务号
@@ -56,14 +63,14 @@ wx.login({
     (let [wx-user-data
           (decrypt-wxdata {:encrypted_data encrypted_data
                            :session_key session_key
-                           :iv iv})]   
-      ;; do 
+                           :iv iv})]
+      ;; do
       wx-user-data
       ;;
       )))
 ```
 
-## 微信服务号jsapi签名`wx.init` (用于微信网页支付和分享等的初始化)
+### 微信服务号jsapi签名`wx.init` (用于微信网页支付和分享等的初始化)
 
 ```clojure
 
