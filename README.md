@@ -63,6 +63,32 @@ wx.login({
       )))
 ```
 
+## 微信服务号jsapi签名`wx.init` (用于微信网页支付和分享等的初始化)
+
+```clojure
+
+(ns your.ns
+  (:require [wechat-clj.wxpay.public :as wx-public]))
+
+(defn url-signature [url]
+  (wx-public/url-signature
+    {:appid {:appid "服务号的appid" :secret "服务号的secret"}
+     :url url
+     :debug true
+     :official-account-jsapi-ticket "服务号的jsapi ticket: 详情见wechat-clj.public.core的文档"}))
+
+(defn get-wx-jsapi-signature [request]
+   (let [request-url (str
+                       "http://your.domain"
+                       (:uri request)
+                       (wx-public/hash-params->url
+                         (:params req)))]
+     {:signature (-> request-url
+                      url-signature
+                      json/generate-string)}))
+
+```
+
 ## License
 
 Copyright © 2020 Steve Chan
