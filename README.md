@@ -10,11 +10,57 @@
 ## Usage
 
 ```clojure
-[wechat "0.1.0-SNAPSHOT"]
+[wechat "0.1.2-SNAPSHOT"]
+```
 
-(ns my.ns
-  (:require [wechat.core :refer :all]))
+### 小程序`wx.login`登陆使用后端的jscode2session获取微信信息
 
+* 小程序端
+
+```js
+wx.login({
+    success: function (r) {
+        var code = r.code;//登录凭证
+        if (code) {
+            //2、调用获取用户信息接口
+            wx.getUserInfo({
+                success: function (res) {
+                    console.log({encryptedData: res.encryptedData, iv: res.iv, code: code})
+                    //3.解密用户信息 获取unionId => 传给后端的jscode2session的API
+                    //...
+                },
+                fail: function () {
+                    console.log('获取用户信息失败')
+                }
+            })
+
+        } else {
+            console.log('获取用户登录态失败！' + r.errMsg)
+        }
+    },
+    fail: function () {
+        callback(false)
+    }
+})
+```
+* 后端的jscode2session的API
+
+```clojure
+(ns your.ns
+  (:require [wechat-clj.jscode2session :refer [get-jscode2session decrypt-wxdata]]))
+
+(defn jscode2session-api [{{:keys [jscode encrypted_data iv]} :params}]
+  (let [{:keys [appid secret]} {:appid "小程序的appid" :secret "小程序的secret"}
+        {:keys [errcode errmsg hints session_key expires_in openid unionid]}
+        (get-jscode2session {:jscode jscode :wxapp-key wxapp-key :op-fn #(identity %)})]
+    (let [wx-user-data
+          (decrypt-wxdata {:encrypted_data encrypted_data
+                           :session_key session_key
+                           :iv iv})]   
+      ;; do 
+      wx-user-data
+      ;;
+      )))
 ```
 
 ## License
