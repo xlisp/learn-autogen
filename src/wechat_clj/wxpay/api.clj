@@ -39,7 +39,7 @@
 
 (defn unified-order
   [{:keys [appid mchid key]}
-   {:keys [body total_fee trade_type openid out-trade-no op-fn wxapp cert callback-url op-fn]}]
+   {:keys [body total_fee trade_type openid out-trade-no op-fn cert callback-url]}]
   (let [wxpay (WXPay. (wx-pay-config appid mchid key cert))
         data (HashMap. {"body"             body
                         "out_trade_no"     out-trade-no
