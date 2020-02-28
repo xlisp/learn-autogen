@@ -1,4 +1,4 @@
-(defproject wechat-clj "0.1.5-SNAPSHOT"
+(defproject wechat-clj "0.1.6-SNAPSHOT"
   :description "微信支付,网络授权,加密库: 包括了前端的wx签名等"
   :url "https://clojars.org/wechat-clj"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
@@ -9,21 +9,24 @@
                  [com.github.wxpay/wxpay-sdk "0.0.3"]
                  [clj-http "3.10.0"]
                  [org.clojure/core.async "0.7.559"]]
+
   :plugins [[lein-doo "0.1.11"]
             [lein-cljsbuild "1.1.7"]]
+
+  :source-paths ["src/clj" "src/cljs" "src/cljc"]
   :java-source-paths ["src/java"]
 
   :cljsbuild
-  {:builds {:minify {:source-paths ["src_cljs"]
+  {:builds {:minify {:source-paths ["src/cljs"]
                      :compiler {:optimizations :advanced
                                 :pretty-print false}}
-            :dev {:source-paths ["src_cljs"]
+            :dev {:source-paths ["src/cljs"]
                   :compiler {:optimizations :whitespace}}
             :test {:id "test"
-                   :source-paths ["src_cljs" "test"]
+                   :source-paths ["src/cljs" "test"]
                    :compiler {:output-to "target/cljs-tests.js"
                               :output-dir "target"
-                              :main wechat-cljs.core
+                              :main wechat-clj.core
                               :optimizations :none
                               :target :nodejs}}}}
 
