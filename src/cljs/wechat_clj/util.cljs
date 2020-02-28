@@ -1,5 +1,6 @@
 (ns wechat-clj.util
-  (:require [cognitect.transit :as t]))
+  (:require [cognitect.transit :as t]
+            [clojure.string :as str]))
 
 (defn ^:export is-weixin []
   (let [ua (-> js/navigator
@@ -12,4 +13,4 @@
 (defn json-string-to-clj [json-stri]
   (t/read json-reader
     (-> json-stri
-      (clojure.string/replace "&quot;" "\""))))
+      (str/replace "&quot;" "\""))))

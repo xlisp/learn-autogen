@@ -9,7 +9,7 @@
                  [com.github.wxpay/wxpay-sdk "0.0.3"]
                  [clj-http "3.10.0"]
                  [org.clojure/core.async "0.7.559"]
-                 [com.cognitect/transit-clj "1.0.324"]]
+                 [com.cognitect/transit-cljs "0.8.256"]]
 
   :plugins [[lein-doo "0.1.11"]
             [lein-cljsbuild "1.1.7"]]
