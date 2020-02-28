@@ -4,7 +4,8 @@
   - [Features](#features)
   - [Usage](#usage)
     - [小程序`wx.login`登陆使用后端的jscode2session获取微信信息](#%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxlogin%E7%99%BB%E9%99%86%E4%BD%BF%E7%94%A8%E5%90%8E%E7%AB%AF%E7%9A%84jscode2session%E8%8E%B7%E5%8F%96%E5%BE%AE%E4%BF%A1%E4%BF%A1%E6%81%AF)
-    - [微信服务号jsapi签名`wx.init` (用于微信网页支付和分享等的初始化)](#%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7jsapi%E7%AD%BE%E5%90%8Dwxinit-%E7%94%A8%E4%BA%8E%E5%BE%AE%E4%BF%A1%E7%BD%91%E9%A1%B5%E6%94%AF%E4%BB%98%E5%92%8C%E5%88%86%E4%BA%AB%E7%AD%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96)
+    - [微信服务号jsapi签名`wx.config` (用于微信网页支付和分享等的初始化)](#%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7jsapi%E7%AD%BE%E5%90%8Dwxconfig-%E7%94%A8%E4%BA%8E%E5%BE%AE%E4%BF%A1%E7%BD%91%E9%A1%B5%E6%94%AF%E4%BB%98%E5%92%8C%E5%88%86%E4%BA%AB%E7%AD%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96)
+    - [小程序微信支付](#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98)
   - [License](#license)
 
 ## Features
@@ -17,7 +18,7 @@
 ## Usage
 
 ```clojure
-[wechat "0.1.2-SNAPSHOT"]
+[wechat "0.1.8-SNAPSHOT"]
 ```
 
 ### 小程序`wx.login`登陆使用后端的jscode2session获取微信信息
@@ -70,10 +71,10 @@ wx.login({
       )))
 ```
 
-### 微信服务号jsapi签名`wx.init` (用于微信网页支付和分享等的初始化)
+### 微信服务号jsapi签名`wx.config` (用于微信网页支付和分享等的初始化)
+* 后端接口获取或模板嵌入html携带jsapi的签名信息
 
 ```clojure
-
 (ns your.ns
   (:require [wechat-clj.wxpay.public :as wx-public]))
 
@@ -93,7 +94,39 @@ wx.login({
      {:signature (-> request-url
                       url-signature
                       json/generate-string)}))
+```
+* 前端cljs获取后端的签名`signature`
 
+```clojure
+(ns your.ns
+  (:require [wechat-clj.core :refer [wx-jsapi-init]]))
+
+(wx-jsapi-init signature)
+
+```
+### 小程序微信支付
+
+``` clojure
+(ns yours.ns
+  (:require [wechat-clj.wxpay.api :as wxpay]))
+
+(def wxpay-cert-byte
+  (future
+    (wxpay/read-wxpay-cert-byte "apiclient_cert.p12")))
+
+(defn miniprogram-unified-order
+  [{:keys [body total-fee openid out-trade-no callback-url op-fn]}]
+  (let [{:keys [appid mchid key secret]} wxpay-confg]
+    (wxpay/unified-order
+      wxpay-confg
+      {:body body
+       :total_fee total-fee
+       :trade_type "NATIVE"
+       :openid openid
+       :out-trade-no out-trade-no
+       :op-fn op-fn
+       :cert @wxpay-cert-byte
+       :callback-url callback-url})))
 ```
 
 ## License
