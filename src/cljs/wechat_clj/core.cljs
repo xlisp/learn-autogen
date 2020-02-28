@@ -1,7 +1,8 @@
 (ns wechat-clj.core
-  (:require [wechat-clj.wxpay]))
+  (:require [wechat-clj.util]
+            [wechat-clj.wxpay]
+            [wechat-clj.jsapi]))
 
-(defn ^:export version [] "0.1.7")
-
-(defn test-fun [title]
-  (js/console.log title))
+(defn ^:export wx-jsapi-init [signatures]
+  (.config js/wx
+    (clj->js signatures)))
