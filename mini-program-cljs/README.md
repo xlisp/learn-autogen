@@ -6,3 +6,17 @@ npm i mini-program-cljs
 
 ```
 
+``` sh
+
+➜  test-path npm i mini-program-cljs -g
+
+➜  test-path node
+> var x = require("mini-program-cljs");
+undefined
+> x.hello
+[Function: hello]
+> x.hello(x)
+'Hello, [object Object]!'
+>
+
+```
