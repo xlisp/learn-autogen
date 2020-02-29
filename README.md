@@ -6,14 +6,21 @@
     - [小程序`wx.login`登陆使用后端的jscode2session获取微信信息](#%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxlogin%E7%99%BB%E9%99%86%E4%BD%BF%E7%94%A8%E5%90%8E%E7%AB%AF%E7%9A%84jscode2session%E8%8E%B7%E5%8F%96%E5%BE%AE%E4%BF%A1%E4%BF%A1%E6%81%AF)
     - [微信服务号jsapi签名`wx.config` (用于微信网页支付和分享等的初始化)](#%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7jsapi%E7%AD%BE%E5%90%8Dwxconfig-%E7%94%A8%E4%BA%8E%E5%BE%AE%E4%BF%A1%E7%BD%91%E9%A1%B5%E6%94%AF%E4%BB%98%E5%92%8C%E5%88%86%E4%BA%AB%E7%AD%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96)
     - [小程序微信支付](#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98)
+    - [oauth2服务号的二次授权](#oauth2%E6%9C%8D%E5%8A%A1%E5%8F%B7%E7%9A%84%E4%BA%8C%E6%AC%A1%E6%8E%88%E6%9D%83)
+    - [微信服务号access_token访问的接口](#%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7access_token%E8%AE%BF%E9%97%AE%E7%9A%84%E6%8E%A5%E5%8F%A3)
   - [License](#license)
 
 ## Features
 
-* 微信支付的后端相关加密,包含小程序和微信服务号
-* 微信服务号的二次授权和小程序的jscode2session
-* 微信服务号获取用户信息的接口map
-* shadow-cljs 编写小程序的需要的npm库`mini-program-cljs`, 运用`wx.*`的方法时mock小程序方法(写自己的wx.*的spec解释器)在普通网页上Repl开发出来 (参考: https://github.com/wechat-miniprogram/sm-crypto)
+* [x] 微信支付的后端相关加密,包含小程序和微信服务号
+* [x] 微信服务号的二次授权
+* [x] 小程序的jscode2session和登录
+* [x] 微信服务号获取用户信息的接口map
+* [x] shadow-cljs 编写小程序的需要的npm库[mini-program-cljs](https://github.com/chanshunli/wechat-clj/tree/master/mini-program-cljs), 运用`wx.*`的方法时mock小程序方法(写自己的wx.*的spec解释器)在普通网页上Repl开发出来
+* [ ] 微信小程序的UI组件库
+* [ ] Hiccup生成微信小程序的前端页面
+* [ ] 微信小程序的支付
+* [ ] 微信服务号的支付
 
 ## Usage
 
@@ -25,31 +32,22 @@
 
 * 小程序端
 
-```js
-wx.login({
-    success: function (r) {
-        var code = r.code;//登录凭证
-        if (code) {
-            //2、调用获取用户信息接口
-            wx.getUserInfo({
-                success: function (res) {
-                    console.log({encryptedData: res.encryptedData, iv: res.iv, code: code})
-                    //3.解密用户信息 获取unionId => 传给后端的jscode2session的API
-                    //...
-                },
-                fail: function () {
-                    console.log('获取用户信息失败')
-                }
-            })
+``` bash
+npm i mini-program-cljs
+```
 
-        } else {
-            console.log('获取用户登录态失败！' + r.errMsg)
-        }
-    },
-    fail: function () {
-        callback(false)
-    }
-})
+```js
+
+var y = require("mini-program-cljs");
+
+y.MiniCljs.login(function(res) {console.log(res)})
+
+//=> res: 将res的内容传递给后端的接口即可获取用户的信息(openid等)
+
+{code: "043Ndldz0WVpcc1Cqpcz03Xgdz0...."
+ encryptedData: "NxmCRAyhhMT2jzdcu012VJznC6HH0H....."
+ iv: "jbjTusiIz2tfzt1ddU..=="}
+
 ```
 * 后端的jscode2session的API
 
@@ -127,6 +125,24 @@ wx.login({
        :op-fn op-fn
        :cert @wxpay-cert-byte
        :callback-url callback-url})))
+```
+
+### oauth2服务号的二次授权
+
+``` clojure
+(ns your.ns
+  (:require [wechat-clj.oauth2]))
+
+;; TODO
+
+```
+### 微信服务号access_token访问的接口
+
+``` clojure
+(ns your.ns
+  (:require [wechat-clj.public.core]))
+
+;; TODO
 ```
 
 ## License

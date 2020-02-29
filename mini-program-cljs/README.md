@@ -1,10 +1,16 @@
 ## [微信小程序的cljs库mini-program-cljs](https://www.npmjs.com/package/mini-program-cljs)
 
+- [微信小程序的cljs库mini-program-cljs](#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84cljs%E5%BA%93mini-program-cljs)
+  - [node上引用测试](#node%E4%B8%8A%E5%BC%95%E7%94%A8%E6%B5%8B%E8%AF%95)
+
 ```sh
 
 npm i mini-program-cljs
 
 ```
+
+
+### node上引用测试
 
 ``` sh
 
