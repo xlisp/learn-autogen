@@ -12,3 +12,5 @@ pom.xml.asc
 .hg/
 .shadow-cljs/
 node_modules/
+target/
+yarn.lock

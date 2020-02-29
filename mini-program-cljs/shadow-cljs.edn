@@ -8,4 +8,8 @@
  []
 
  :builds
- {}}
+ {:app {:target :npm-module
+        :output-dir "target/"
+        :release
+        {:entries [mini-program-cljs.core]
+         :output-dir "target/release/"}}}}
