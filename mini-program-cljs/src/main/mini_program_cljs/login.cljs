@@ -17,6 +17,7 @@
                  (fn [^js res]
                    (success-fn #js {:encryptedData (.-encryptedData res)
                                     :iv (.-iv res)
-                                    :code code}
-                     #js #(alert "获取用户信息失败!")))))))
+                                    :code code}))
+                 (fn [] (alert "获取用户信息失败!"))))
+             ))
          :fail (fn [] false)}))
