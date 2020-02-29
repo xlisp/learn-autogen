@@ -1,6 +1,6 @@
 {
   "name": "mini-program-cljs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./target/release/mini_program_cljs.core.js",
   "scripts": {
     "compile": "shadow-cljs compile app",
