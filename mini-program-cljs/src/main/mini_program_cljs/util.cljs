@@ -6,3 +6,7 @@
          :icon "none"
          :mask false
          :duration 3000}))
+
+(defn switch-router [url]
+  (.navigateTo js/wx
+    #js {:url url}))
