@@ -14,7 +14,8 @@
        :alert alert
        :login login
        :switchRouter switch-router
-       :getUserInfo get-user-info})
+       :getUserInfo get-user-info
+       :isEmpty empty?})
 
 (defn ^:export version [who]
   (str "0.2.1, " who "!"))
