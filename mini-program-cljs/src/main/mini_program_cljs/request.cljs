@@ -13,9 +13,7 @@
         #js {:url url
              :method method
              :data data
-             :header (if (empty? header)
-                       {"Content-Type" "application/json; charset=UTF-8"}
-                       header)
+             :header header
              :success (fn [^js request]
                         (js/console.log request)
                         (resolve request))
