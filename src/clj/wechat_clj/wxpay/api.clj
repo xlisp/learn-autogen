@@ -5,6 +5,15 @@
    (com.github.wxpay.sdk WXPay WXPayConfig
      WXPayUtil WXPayConstants$SignType)))
 
+(defn signature [{:keys [appid key]}
+                 {:keys [nonceStr prepay_id timeStamp]}]
+  (let [hash {"appId" appid
+              "nonceStr" nonceStr
+              "package" (str "prepay_id=" prepay_id)
+              "signType" "MD5"
+              "timeStamp" timeStamp}]
+    (WXPayUtil/generateSignature (HashMap. hash) key WXPayConstants$SignType/MD5)))
+
 (defn get-unix-second []
   (int (/ (System/currentTimeMillis) (Long. 1000))))
 
