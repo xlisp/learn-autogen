@@ -36,14 +36,21 @@
 npm i mini-program-cljs
 ```
 
+``` html
+<button open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取用户信息登陆</button>
+```
+
 ```js
 
-var y = require("mini-program-cljs");
+import { MiniCljs } from 'mini-program-cljs';
 
-y.MiniCljs.login(function(res) {console.log(res)})
+Page({
+    getUserInfo: function(e) {
+      MiniCljs.login(function(res) {console.log(res)}, e.detail.iv, e.detail.encryptedData)
+    }
+})
 
 //=> res: 将res的内容传递给后端的接口即可获取用户的信息(openid等)
-
 {code: "043Ndldz0WVpcc1Cqpcz03Xgdz0...."
  encryptedData: "NxmCRAyhhMT2jzdcu012VJznC6HH0H....."
  iv: "jbjTusiIz2tfzt1ddU..=="}
