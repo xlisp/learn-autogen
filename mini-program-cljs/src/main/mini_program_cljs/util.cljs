@@ -1,5 +1,10 @@
 (ns mini-program-cljs.util)
 
+;; TODO: 需要写个宏来生成这样的函数,帮它转好参数为clojure的keys风格
+(defn jsx->clj
+  [x]
+  (into {} (for [k (.keys js/Object x)] [(keyword k) (aget x k)])))
+
 (defn alert [title]
   (.showToast js/wx
     #js {:title title
