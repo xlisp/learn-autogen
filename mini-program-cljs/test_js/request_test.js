@@ -20,3 +20,13 @@ ff.MiniCljs.request("https://www.test.com/testpay333", "POST", {'aaa': 12112, 'b
     })
 })
 
+
+ff.MiniCljs.request({url: "https://www.test.com/testjson", method: "GET", data: {aaa: 222, bbb: 22}}).then(res => {
+    console.log("2222")
+    console.log(res);
+}).catch(err => {
+    wx.showToast({
+        title: err.message,
+        icon: 'none'
+    })
+})
