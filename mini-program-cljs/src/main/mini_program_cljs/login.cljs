@@ -8,7 +8,7 @@
          :fail-fn fail-fn}))
 
 (defn login [^js options]
-  (let [{:keys [success-fn iv encrypted-data]}
+  (let [{:keys [successFn iv encryptedData]}
         (u/jsx->clj options)]
     (.login js/wx
       #js {:success
@@ -16,8 +16,8 @@
              (let [code (.-code r)]
                (if (empty? code)
                  (alert (str "登录失败!" (.-errMsg r)))
-                 (success-fn #js {:encryptedData encrypted-data
-                                  :iv iv
-                                  :code code}))))
+                 (successFn #js {:encryptedData encryptedData
+                                 :iv iv
+                                 :code code}))))
            :fail (fn []
                    (alert (str "登录失败!")))})))

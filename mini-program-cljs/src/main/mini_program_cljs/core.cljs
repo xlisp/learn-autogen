@@ -10,7 +10,9 @@
     (let [response (mini-program-cljs.macro/await
                      (js/setTimeout (fn [] (alert "定时结束")) 2000))
           json (mini-program-cljs.macro/await #js {:data "定时器await"})]
-      (.log js/console json))))
+      (alert json)
+      (.log js/console json)
+      json)))
 
 (def ^:export Storage #js {:getSync get-storage-sync :setSync set-storage-sync})
 
