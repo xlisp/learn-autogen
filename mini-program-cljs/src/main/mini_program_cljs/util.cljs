@@ -24,3 +24,11 @@
 (defn get-storage-sync [key]
   (.parse js/JSON
     (.getStorageSync js/wx key)))
+
+(defn tel-phone [phone]
+  (.makePhoneCall js/wx
+    #js {:phoneNumber phone}))
+
+(defn set-title [title]
+  (.setNavigationBarTitle js/wx
+    #js {:title title}))

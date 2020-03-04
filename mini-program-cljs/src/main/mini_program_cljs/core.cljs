@@ -2,7 +2,9 @@
   (:require-macros [mini-program-cljs.macro])
   (:require
    [mini-program-cljs.request :refer [request]]
-   [mini-program-cljs.util :refer [alert switch-router set-storage-sync get-storage-sync]]
+   [mini-program-cljs.util :refer
+    [alert switch-router set-storage-sync get-storage-sync
+     tel-phone set-title]]
    [mini-program-cljs.login :refer [login get-user-info]]))
 
 (defn http-get-test [url]
@@ -26,7 +28,9 @@
        :switchRouter switch-router
        :getUserInfo get-user-info
        :isEmpty empty?
-       :awaitTest http-get-test})
+       :awaitTest http-get-test
+       :telPhone tel-phone
+       :setTitle set-title})
 
 (defn ^:export version [who]
   (str "0.2.1, " who "!"))
