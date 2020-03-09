@@ -8,6 +8,8 @@
     - [小程序微信支付](#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98)
     - [oauth2服务号的二次授权](#oauth2%E6%9C%8D%E5%8A%A1%E5%8F%B7%E7%9A%84%E4%BA%8C%E6%AC%A1%E6%8E%88%E6%9D%83)
     - [微信服务号access_token访问的接口](#%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7access_token%E8%AE%BF%E9%97%AE%E7%9A%84%E6%8E%A5%E5%8F%A3)
+    - [微信服务号的支付](#%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7%E7%9A%84%E6%94%AF%E4%BB%98)
+    - [微信小程序的支付](#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%94%AF%E4%BB%98)
   - [License](#license)
 
 ## Features
@@ -19,8 +21,8 @@
 * [x] shadow-cljs 编写小程序的需要的npm库[mini-program-cljs](https://github.com/chanshunli/wechat-clj/tree/master/mini-program-cljs), 运用`wx.*`的方法时mock小程序方法(写自己的wx.*的spec解释器)在普通网页上Repl开发出来
 * [ ] 微信小程序的UI组件库
 * [ ] Hiccup生成微信小程序的前端页面
-* [ ] 微信小程序的支付
-* [ ] 微信服务号的支付
+* [x] 微信小程序的支付
+* [x] 微信服务号的支付
 * [ ] 微信客户机器人和开发
 
 ## Usage
@@ -153,6 +155,86 @@ Page({
 ;; TODO
 ```
 
+### 微信服务号的支付
+
+* 后端支付的接口的用法(假设用MD5签名)
+
+``` clojure
+(ns your.ns
+  (:require [wechat-clj.wxpay.api :as wxpay]))
+
+;; 读取微信支付的cert证书
+(def wxpay-cert-byte
+  (future
+    (wxpay/read-wxpay-cert-byte "apiclient_cert.p12")))
+
+(let [res (wxpay/unified-order
+            wxpay-confg
+            {:body "测试支付"
+             :total_fee 1
+             :trade_type "JSAPI"
+             :openid "你的微信openid"
+             :out-trade-no "321320989890312(交易id)"
+             :op-fn identity
+             :cert @wxpay-cert-byte
+             :callback-url "https://支付成功回调的api接口"})
+      ;;res正确返回的样子 => {:msg "ok", :res {"nonce_str" "6So2RRrVGKuBSxxxx", "code_url" "weixin://wxpay/bizpayurl?pr=2KEuxxx", "appid" "wxcxxxxx1121", "sign" "B4ACAE399E2307252xxxxx11", "trade_type" "JSAPI", "return_msg" "OK", "result_code" "SUCCESS", "mch_id" "13125434531", "return_code" "SUCCESS", "prepay_id" "wx022007560531243142423317900"}, :out_trade_no "aasdas321312asdds3123"}
+      time-stamp (str (wxpay/get-unix-second))]
+
+  ;; 注意: 微信之后的签名下单,默认为MD5签名 # 前端wx.chooseWXPay方法也会验证一次后端的签名是否一致
+  (let [signature
+        (wxpay/signature
+          {:appid "服务号appid" :key "微信支付的key"}
+          {:nonceStr (get (:res res) "nonce_str")
+           :prepay_id (get (:res res) "prepay_id")
+           :timeStamp time-stamp})]
+    ;; 最后API返回给前端wx.chooseWXPay支付需要的信息
+    {:timeStamp time-stamp
+     :nonceStr nonce_str
+     :prepayId prepay_id
+     :paySign signature}
+    )
+  )
+
+```
+
+* 前端支付调用的用法(假设用MD5签名)
+
+```clojurescript
+(ns your.ns
+  (:require [wechat-clj.wxpay :as wxpay]))
+
+(wxpay/choose-wxpay
+  {:time-stamp time-stamp
+   :nonce-str nonce-str
+   :prepay-id prepay-id})
+
+```
+
+### 微信小程序的支付
+* 后端API同服务号的微信支付的用法
+* 前端小程序
+```js
+wx.requestPayment({
+    'timeStamp': res.data.timeStamp,
+    'nonceStr': res.data.nonceStr,
+    'package': "prepay_id=" + res.data.prepayId,
+    'signType': 'MD5',
+    'paySign': res.data.paySign,
+    'success':function(res){
+        console.log(res);
+        MiniCljs.alert("支付成功");
+    },
+    'fail':function(res){
+        console.log(res);
+        MiniCljs.alert("支付失败");
+    },
+    'complete':function(res){
+        console.log(res);
+        MiniCljs.alert("支付完成");
+    }
+})
+```
 ## License
 
 Copyright © 2020 Steve Chan
