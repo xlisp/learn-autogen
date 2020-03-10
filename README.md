@@ -25,6 +25,7 @@
 * [ ] 微信客户机器人和开发
 * [ ] 签名,加解密和验证成功与否的工具函数或者spec解释器: spec出来具体很细的签名哪一部分错了,前端还是后端,还是排序还是大小写,缺了哪个字段等,大大减少验证签名的时间
 * [ ] 给每一个调用的前后端函数写Spec,严格化工程
+* [ ] 基于[miniprogram-automator](https://developers.weixin.qq.com/miniprogram/dev/devtools/auto/)完善ClojureScript和Shadow开发微信小程序库的流程和自动化工具,测试链
 
 ## Usage
 
