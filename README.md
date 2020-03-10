@@ -23,6 +23,7 @@
 * [x] 微信小程序的支付
 * [x] 微信服务号的支付
 * [ ] 微信客户机器人和开发
+* [ ] 签名和验证成功与否的工具函数或者解释器
 
 ## Usage
 
@@ -175,14 +176,16 @@ Page({
 
 * 前端支付调用的用法(假设用MD5签名)
 
-```clojurescript
+```clojure
 (ns your.ns
   (:require [wechat-clj.wxpay :as wxpay]))
 
+;; 下面的四个参数都是后端传过来的
 (wxpay/choose-wxpay
   {:time-stamp time-stamp
    :nonce-str nonce-str
-   :prepay-id prepay-id})
+   :prepay-id prepay-id
+   :pay-sign pay-sign})
 
 ```
 
