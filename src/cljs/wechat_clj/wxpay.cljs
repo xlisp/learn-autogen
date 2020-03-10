@@ -1,8 +1,8 @@
 (ns wechat-clj.wxpay)
 
 (defn choose-wxpay
-  [{:keys [time-stamp nonce-str prepay-id
-           sign-type pay-sign success-fn]
+  [{:keys [time-stamp nonce-str prepay-id pay-sign
+           sign-type  success-fn  cencel-fn fail-fn]
     :or {sign-type "MD5"
          success-fn (fn [res] (js/alert (str "支付成功" res)))
          cencel-fn (fn [res] (js/alert (str "支付取消" res)))
