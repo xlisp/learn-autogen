@@ -6,6 +6,14 @@
   - [微信小程序](#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F)
     - [小程序`wx.login`登陆使用后端的jscode2session获取微信信息](#%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxlogin%E7%99%BB%E9%99%86%E4%BD%BF%E7%94%A8%E5%90%8E%E7%AB%AF%E7%9A%84jscode2session%E8%8E%B7%E5%8F%96%E5%BE%AE%E4%BF%A1%E4%BF%A1%E6%81%AF)
     - [异步的`wx.request`使用](#%E5%BC%82%E6%AD%A5%E7%9A%84wxrequest%E4%BD%BF%E7%94%A8)
+    - [异步的`wx.NewRequest`使用](#%E5%BC%82%E6%AD%A5%E7%9A%84wxnewrequest%E4%BD%BF%E7%94%A8)
+    - [`wx.*`类方法的调用方法](#wx%E7%B1%BB%E6%96%B9%E6%B3%95%E7%9A%84%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95)
+    - [`Page.this`传入类的调用方法](#pagethis%E4%BC%A0%E5%85%A5%E7%B1%BB%E7%9A%84%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95)
+    - [分页的组件使用](#%E5%88%86%E9%A1%B5%E7%9A%84%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8)
+    - [States工具类](#states%E5%B7%A5%E5%85%B7%E7%B1%BB)
+    - [miniprogram-automator 模拟器测试工具使用](#miniprogram-automator-%E6%A8%A1%E6%8B%9F%E5%99%A8%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8)
+    - [时间选择组件使用](#%E6%97%B6%E9%97%B4%E9%80%89%E6%8B%A9%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8)
+    - [图表组件使用](#%E5%9B%BE%E8%A1%A8%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8)
     - [微信小程序的支付](#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%94%AF%E4%BB%98)
   - [微信服务号](#%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%8F%B7)
     - [基础支持-获取access_token: 定时器获取](#%E5%9F%BA%E7%A1%80%E6%94%AF%E6%8C%81-%E8%8E%B7%E5%8F%96access_token-%E5%AE%9A%E6%97%B6%E5%99%A8%E8%8E%B7%E5%8F%96)
@@ -45,6 +53,9 @@
     - [微信JS-SDK-微信小店](#%E5%BE%AE%E4%BF%A1js-sdk-%E5%BE%AE%E4%BF%A1%E5%B0%8F%E5%BA%97)
     - [微信JS-SDK-微信卡券](#%E5%BE%AE%E4%BF%A1js-sdk-%E5%BE%AE%E4%BF%A1%E5%8D%A1%E5%88%B8)
     - [微信JS-SDK-微信支付](#%E5%BE%AE%E4%BF%A1js-sdk-%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98)
+  - [成为开发者](#%E6%88%90%E4%B8%BA%E5%BC%80%E5%8F%91%E8%80%85)
+    - [基于miniprogram-automator开发ClojureScript小程序库](#%E5%9F%BA%E4%BA%8Eminiprogram-automator%E5%BC%80%E5%8F%91clojurescript%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BA%93)
+    - [贡献wechat-clj代码,Pull Request](#%E8%B4%A1%E7%8C%AEwechat-clj%E4%BB%A3%E7%A0%81pull-request)
   - [License](#license)
 
 ## Features
@@ -150,6 +161,46 @@ MiniCljs.request(
    }).catch(err => {
    MiniCljs.alert(err.message)
    })
+```
+
+### 异步的`wx.NewRequest`使用
+
+``` javascript
+;; TODO
+```
+
+### `wx.*`类方法的调用方法
+
+``` javascript
+;; TODO
+```
+
+### `Page.this`传入类的调用方法
+
+``` javascript
+;; TODO
+MiniCljs.testFun(this, arg1 ...)
+```
+
+### 分页的组件使用
+``` javascript
+;; TODO
+```
+### States工具类
+``` javascript
+;; TODO
+```
+### miniprogram-automator 模拟器测试工具使用
+``` javascript
+;; TODO
+```
+### 时间选择组件使用
+``` javascript
+;; TODO
+```
+### 图表组件使用
+``` javascript
+;; TODO
 ```
 
 ### 微信小程序的支付
@@ -485,6 +536,20 @@ wx.requestPayment({
    :prepay-id prepay-id
    :pay-sign pay-sign})
 
+```
+
+## 成为开发者
+
+### 基于[miniprogram-automator](https://developers.weixin.qq.com/miniprogram/dev/devtools/auto/)开发ClojureScript小程序库
+
+``` clojure
+;; TODO
+```
+
+### 贡献wechat-clj代码,Pull Request
+
+``` clojure
+;; TODO
 ```
 
 ## License
