@@ -76,3 +76,24 @@
   "Same as (.race js/Promise coll), but for easier usage within async blocks"
   [coll]
   `(~'await* (.race js/Promise ~coll)))
+
+;; -------------------
+(defmacro call-promise [{:keys [then-fn catch-fn]}
+                        & body]
+  `(-> ~@body
+     (.then
+       (fn [obj#]
+         (js/console.log "Get Promise Object: " obj#)
+         (~then-fn obj#)))
+     (.catch
+       (fn [e#]
+         (js/console.error "Promise Error: " e#)
+         (~catch-fn e#)))))
+
+(comment
+  (demo.core/call-promise
+    {:then-fn (fn [miniprogram]
+                (reset! mini-program miniprogram))
+     :catch-fn (fn [x] x)}
+    (.connect  automator
+      #js {:wsEndpoint "ws://localhost:9420"})))
