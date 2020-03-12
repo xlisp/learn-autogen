@@ -1,6 +1,6 @@
-# wechat-clj微信开发全家桶: 微信支付,网络授权,加密库等
+# wechat-clj微信开发全家桶: 微信支付,小程序库,服务号开发,代码生成器等
 
-- [wechat-clj微信开发全家桶: 微信支付,网络授权,加密库等](#wechat-clj%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E5%85%A8%E5%AE%B6%E6%A1%B6-%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E7%BD%91%E7%BB%9C%E6%8E%88%E6%9D%83%E5%8A%A0%E5%AF%86%E5%BA%93%E7%AD%89)
+- [wechat-clj微信开发全家桶: 微信支付,小程序库,服务号开发,代码生成器等](#wechat-clj%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E5%85%A8%E5%AE%B6%E6%A1%B6-%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BA%93%E6%9C%8D%E5%8A%A1%E5%8F%B7%E5%BC%80%E5%8F%91%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8%E7%AD%89)
   - [Features](#features)
   - [Usage](#usage)
     - [小程序`wx.login`登陆使用后端的jscode2session获取微信信息](#%E5%B0%8F%E7%A8%8B%E5%BA%8Fwxlogin%E7%99%BB%E9%99%86%E4%BD%BF%E7%94%A8%E5%90%8E%E7%AB%AF%E7%9A%84jscode2session%E8%8E%B7%E5%8F%96%E5%BE%AE%E4%BF%A1%E4%BF%A1%E6%81%AF)
@@ -35,7 +35,7 @@
 
 ### 小程序`wx.login`登陆使用后端的jscode2session获取微信信息
 
-* 小程序端
+* [小程序端](https://github.com/chanshunli/wechat-clj/tree/master/mini-program-cljs)
 
 ``` bash
 npm i mini-program-cljs
@@ -46,7 +46,6 @@ npm i mini-program-cljs
 ```
 
 ```js
-
 import { MiniCljs } from 'mini-program-cljs';
 
 Page({
@@ -56,12 +55,6 @@ Page({
                       encryptedData: e.detail.encryptedData})
     }
 })
-
-//=> res: 将res的内容传递给后端的接口即可获取用户的信息(openid等)
-{code: "043Ndldz0WVpcc1Cqpcz03Xgdz0...."
- encryptedData: "NxmCRAyhhMT2jzdcu012VJznC6HH0H....."
- iv: "jbjTusiIz2tfzt1ddU..=="}
-
 ```
 * 后端的jscode2session的API
 
