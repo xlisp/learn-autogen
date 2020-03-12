@@ -18,10 +18,10 @@
 * [x] 小程序的jscode2session和登录
 * [x] 微信服务号获取用户信息的接口map
 * [x] shadow-cljs 编写小程序的需要的npm库[mini-program-cljs](https://github.com/chanshunli/wechat-clj/tree/master/mini-program-cljs), 运用`wx.*`的方法时mock小程序方法(写自己的wx.*的spec解释器)在普通网页上Repl开发出来
-* [ ] 微信小程序的UI组件库
-* [ ] Hiccup生成微信小程序的前端页面
 * [x] 微信小程序的支付
 * [x] 微信服务号的支付
+* [ ] 微信小程序的UI组件库
+* [ ] Hiccup生成微信小程序的前端页面: [Elisp混合clomacs生成方案](https://github.com/chanshunli/emacs_spark_nlp/blob/master/elisp/jim-emmet.el) 和 纯Clojure生成wxml和wxss代码方案
 * [ ] 微信客户机器人和开发
 * [ ] 签名,加解密和验证成功与否的工具函数或者spec解释器: spec出来具体很细的签名哪一部分错了,前端还是后端,还是排序还是大小写,缺了哪个字段等,大大减少验证签名的时间
 * [ ] 给每一个调用的前后端函数写Spec,严格化工程
@@ -30,7 +30,7 @@
 ## Usage
 
 ```clojure
-[wechat "0.1.8-SNAPSHOT"]
+[wechat "0.2.1-SNAPSHOT"]
 ```
 
 ### 小程序`wx.login`登陆使用后端的jscode2session获取微信信息
@@ -51,7 +51,9 @@ import { MiniCljs } from 'mini-program-cljs';
 
 Page({
     getUserInfo: function(e) {
-      MiniCljs.login(function(res) {console.log(res)}, e.detail.iv, e.detail.encryptedData)
+      MiniCljs.login({successFn: function(res) {console.log(res)},
+                      iv: e.detail.iv,
+                      encryptedData: e.detail.encryptedData})
     }
 })
 
@@ -75,7 +77,7 @@ Page({
           (decrypt-wxdata {:encrypted_data encrypted_data
                            :session_key session_key
                            :iv iv})]
-      ;; do
+      ;; 加入表存储你需要的微信用户信息
       wx-user-data
       ;;
       )))
@@ -174,6 +176,38 @@ Page({
     )
   )
 
+```
+
+* 微信支付成功的回调XML解析,更新微信支付的状态机
+
+``` clojure
+(ns your.ns
+  (:require [wechat-clj.util :as wechat-u]))
+
+(defn your-wxpay-callback
+  [request]
+  (let [req-xml-body (slurp (:body request))
+        {:keys [out_trade_no return_code] :as params} (wechat-u/parse-wxpay-callback-xml req-xml-body)]
+        ;; 在数据库中将订单号的对应的状态设置为支付成功
+        ;; ===>>> req-xml-body 样例
+        ;;<xml><appid><![CDATA[wx321sde321]]></appid>
+        ;;<bank_type><![CDATA[GDB_CREDIT]]></bank_type>
+        ;;<cash_fee><![CDATA[1]]></cash_fee>
+        ;;<fee_type><![CDATA[CNY]]></fee_type>
+        ;;<is_subscribe><![CDATA[Y]]></is_subscribe>
+        ;;<mch_id><![CDATA[15das321321]]></mch_id>
+        ;;<nonce_str><![CDATA[bd650baa321321a2d02c5e]]></nonce_str>
+        ;;<openid><![CDATA[o3Nbh0j0dasdas321321Z_x8Tq8s]]></openid>
+        ;;<out_trade_no><![CDATA[135b652e27321321das5393b2d910a3cc]]></out_trade_no>
+        ;;<result_code><![CDATA[SUCCESS]]></result_code>
+        ;;<return_code><![CDATA[SUCCESS]]></return_code>
+        ;;<sign><![CDATA[4E973EAA376203213210dasdas20035C]]></sign>
+        ;;<time_end><![CDATA[201912263213249]]></time_end>
+        ;;<total_fee>1</total_fee>
+        ;;<trade_type><![CDATA[JSAPI]]></trade_type>
+        ;;<transaction_id><![CDATA[4200000321321d32132105020]]></transaction_id>
+        ;;</xml>
+        ))
 ```
 
 * 前端支付调用的用法(假设用MD5签名)
