@@ -1,4 +1,4 @@
-(defproject wechat-clj "0.2.1-SNAPSHOT"
+(defproject wechat-clj "0.2.2-SNAPSHOT"
   :description "微信支付,网络授权,加密库: 包括了前端的wx签名等"
   :url "https://clojars.org/wechat-clj"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
