@@ -1,4 +1,3 @@
 #!/bin/bash
-yarn release
+RELEASE=true yarn release
 npm publish
-

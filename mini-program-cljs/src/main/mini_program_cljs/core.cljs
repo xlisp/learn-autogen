@@ -8,6 +8,11 @@
      tel-phone set-title]]
    [mini-program-cljs.login :refer [login get-user-info]]))
 
+(defn isRelease []
+  (if (=  js/process.env.RELEASE "true")
+    true
+    false))
+
 (def mini-program (atom ""))
 
 (comment
@@ -39,7 +44,9 @@
       json)))
 
 (def ^:export Storage
-  #js {:getSync get-storage-sync :setSync set-storage-sync})
+  #js {:getSync get-storage-sync
+       :setSync set-storage-sync
+       :isRelease isRelease})
 
 ;; (def ^:export Request #js {:get get :post post})
 
