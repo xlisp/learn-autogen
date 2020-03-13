@@ -1,5 +1,6 @@
 (ns mini-program-cljs.core
-  (:require-macros [mini-program-cljs.macro :refer [call-promise-1]])
+  (:require-macros [mini-program-cljs.macro
+                    :refer [call-promise-1 wx-fun-dev wx-fun]])
   (:require
    [mini-program-cljs.request :refer [request]]
    [mini-program-cljs.util :refer
@@ -11,7 +12,14 @@
 
 (comment
   (require '[miniprogram-automator :as automator])
-  (reset-mini-program automator))
+  (reset-mini-program automator)
+  ;;
+  (wx-fun-dev @mini-program checkSession) ;; => #'mini-program-cljs.core/wx-check-session
+
+  (call-promise-1
+    (fn [res] (prn "=====" res))        ;;=> "=====" #js {:errMsg "checkSession:ok"}
+    (wx-check-session :success (fn [res] res)))
+  )
 (defn reset-mini-program [automator]
   (call-promise-1
     (fn [miniprogram]
