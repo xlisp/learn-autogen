@@ -78,8 +78,8 @@
   `(~'await* (.race js/Promise ~coll)))
 
 ;; -------------------
-(defmacro call-promise [{:keys [then-fn catch-fn]}
-                        & body]
+(defmacro call-promise
+  [{:keys [then-fn catch-fn]} & body]
   `(-> ~@body
      (.then
        (fn [obj#]
@@ -97,3 +97,15 @@
      :catch-fn (fn [x] x)}
     (.connect  automator
       #js {:wsEndpoint "ws://localhost:9420"})))
+
+(defmacro call-promise-1
+  "只是取出来promise的值,不关心错误"
+  [then-fn & body]
+  `(-> ~@body
+     (.then
+       (fn [obj#]
+         (js/console.log "Get Promise Object: " obj#)
+         (~then-fn obj#)))
+     (.catch
+       (fn [e#]
+         (js/console.error "Promise Error: " e#)))))
