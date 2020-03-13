@@ -7,6 +7,8 @@
      tel-phone set-title]]
    [mini-program-cljs.login :refer [login get-user-info]]))
 
+(comment
+  (http-get-test "https://www.test.com/testjson"))
 (defn http-get-test [url]
   (mini-program-cljs.macro/async
     (let [response (mini-program-cljs.macro/await
@@ -16,12 +18,12 @@
       (.log js/console json)
       json)))
 
-(def ^:export Storage #js {:getSync get-storage-sync :setSync set-storage-sync})
+(def ^:export Storage
+  #js {:getSync get-storage-sync :setSync set-storage-sync})
 
 ;; (def ^:export Request #js {:get get :post post})
 
-(def ^:export
-  MiniCljs
+(def ^:export MiniCljs
   #js {:request request
        :alert alert
        :login login
@@ -31,6 +33,3 @@
        :awaitTest http-get-test
        :telPhone tel-phone
        :setTitle set-title})
-
-(defn ^:export version [who]
-  (str "0.2.1, " who "!"))

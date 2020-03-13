@@ -96,7 +96,7 @@
                 (reset! mini-program miniprogram))
      :catch-fn (fn [x] x)}
     (.connect  automator
-      #js {:wsEndpoint "ws://localhost:9420"})))
+      {:wsEndpoint "ws://localhost:9420"})))
 
 (defmacro call-promise-1
   "只是取出来promise的值,不关心错误"
