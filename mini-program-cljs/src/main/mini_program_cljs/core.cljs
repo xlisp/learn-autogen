@@ -1,11 +1,23 @@
 (ns mini-program-cljs.core
-  (:require-macros [mini-program-cljs.macro])
+  (:require-macros [mini-program-cljs.macro :refer [call-promise-1]])
   (:require
    [mini-program-cljs.request :refer [request]]
    [mini-program-cljs.util :refer
     [alert switch-router set-storage-sync get-storage-sync
      tel-phone set-title]]
    [mini-program-cljs.login :refer [login get-user-info]]))
+
+(def mini-program (atom ""))
+
+(comment
+  (require '[miniprogram-automator :as automator])
+  (reset-mini-program automator))
+(defn reset-mini-program [automator]
+  (call-promise-1
+    (fn [miniprogram]
+      (reset! mini-program miniprogram))
+    (.connect automator
+      #js {:wsEndpoint "ws://localhost:9420"})))
 
 (comment
   (http-get-test "https://www.test.com/testjson"))

@@ -2,7 +2,8 @@
 (ns mini-program-cljs.macro
   (:refer-clojure :exclude [await])
   (:require [cljs.analyzer :as ana]
-            [cljs.compiler :as compiler]))
+            [cljs.compiler :as compiler]
+            [clojure.string :as str]))
 
 (def ^:dynamic *in-async* false)
 
@@ -109,3 +110,35 @@
      (.catch
        (fn [e#]
          (js/console.error "Promise Error: " e#)))))
+
+(comment
+  (jsname->clj "offPageNotFound")
+  ;; => "off-page-not-found"
+  )
+(defn jsname->clj [stri]
+  (->>
+    (seq (str/replace stri "_" "-"))
+    (map (fn [st]
+           (let [s (str st)]
+             (if (re-find #"[A-Z]" s)
+               (str "-" (str/lower-case s)) s))))
+    (str/join "")))
+
+(comment
+  ;; => 1. 生成函数:
+  (clojure.pprint/pprint (macroexpand-1 '(wx-fun-dev mini-pro checkSession)))
+  ;; => 2. 变成调用: (wx-login :success (fn [res] res) :fail (fn [res] 111))
+  ;; ---- 生产release
+  (clojure.pprint/pprint (macroexpand-1 '(wx-fun checkSession))))
+(defmacro wx-fun-dev [mini-pro fname]
+  `(defn ~(symbol (str "wx-" (jsname->clj (str fname))))
+     [& args#]
+     (.callWxMethod ~mini-pro
+       ~(str fname)
+       (apply hash-map args#))))
+
+(defmacro wx-fun [fname]
+  `(defn ~(symbol (str "wx-" (jsname->clj (str fname))))
+     [& args#]
+     (~(symbol (str "." fname)) js/wx
+      (apply hash-map args#))))
