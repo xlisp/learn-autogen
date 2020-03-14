@@ -2,6 +2,7 @@
   (:require-macros [mini-program-cljs.macro
                     :refer [call-promise-1 wx-fun-dev wx-fun]])
   (:require
+   ;;[miniprogram-automator :as automator] ;;需要Emacs动态注入
    [mini-program-cljs.request :refer [request]]
    [mini-program-cljs.util :refer
     [alert switch-router set-storage-sync get-storage-sync
@@ -16,7 +17,7 @@
 (def mini-program (atom ""))
 
 (comment
-  (require '[miniprogram-automator :as automator])
+  ;; (require '[miniprogram-automator :as automator])
   (reset-mini-program automator)
   ;;
   (wx-fun-dev @mini-program checkSession) ;; => #'mini-program-cljs.core/wx-check-session
