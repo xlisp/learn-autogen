@@ -1,5 +1,9 @@
 # wechat-clj微信开发全家桶: 微信支付,小程序库,服务号开发,代码生成器等
 
+## ClojureScript Repl开发微信小程序库体验, 爽呆了!!!
+
+![](https://github.com/chanshunli/wechat-clj/raw/master/cljs_repl_dev_miniprogram.gif)
+
 - [wechat-clj微信开发全家桶: 微信支付,小程序库,服务号开发,代码生成器等](#wechat-clj%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E5%85%A8%E5%AE%B6%E6%A1%B6-%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BA%93%E6%9C%8D%E5%8A%A1%E5%8F%B7%E5%BC%80%E5%8F%91%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8%E7%AD%89)
   - [Features](#features)
   - [Usage](#usage)
