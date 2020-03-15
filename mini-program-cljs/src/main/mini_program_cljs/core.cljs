@@ -2,29 +2,22 @@
   (:require-macros [mini-program-cljs.macro
                     :refer [call-promise-1 wx-fun-dev wx-fun]])
   (:require
-   ;;[miniprogram-automator :as automator] ;;需要Emacs动态注入
+   [miniprogram-automator :as automator] ;; 发布的时候需要删除这一行, 用gsub去掉,发布结束后再checkout回来
    [mini-program-cljs.request :refer [request]]
    [mini-program-cljs.util :refer
     [alert switch-router set-storage-sync get-storage-sync
      tel-phone set-title]]
    [mini-program-cljs.login :refer [login get-user-info]]))
 
-(defn isRelease []
-  (if (=  js/process.env.RELEASE "true")
-    true
-    false))
-
 (def mini-program (atom ""))
 
-(comment
-  ;; (require '[miniprogram-automator :as automator])
-  (reset-mini-program automator)
-  ;;
-  (wx-fun-dev @mini-program checkSession) ;; => #'mini-program-cljs.core/wx-check-session
+(def current-page (atom ""))
 
-  (call-promise-1
-    (fn [res] (prn "=====" res))        ;;=> "=====" #js {:errMsg "checkSession:ok"}
-    (wx-check-session :success (fn [res] res)))
+(comment
+  (reset-mini-program automator)
+
+  (reset-current-page "personal")
+
   )
 (defn reset-mini-program [automator]
   (call-promise-1
@@ -32,6 +25,15 @@
       (reset! mini-program miniprogram))
     (.connect automator
       #js {:wsEndpoint "ws://localhost:9420"})))
+
+(defn reset-current-page [page]
+  (do
+    (.callWxMethod @mini-program "navigateTo"
+      #js {:url (str "/pages/" page "/" page)})
+    (call-promise-1
+      (fn [page]
+        (reset! current-page page))
+      (.reLaunch @mini-program page))))
 
 (comment
   (http-get-test "https://www.test.com/testjson"))

@@ -129,7 +129,17 @@
   (clojure.pprint/pprint (macroexpand-1 '(wx-fun-dev mini-pro checkSession)))
   ;; => 2. 变成调用: (wx-login :success (fn [res] res) :fail (fn [res] 111))
   ;; ---- 生产release
-  (clojure.pprint/pprint (macroexpand-1 '(wx-fun checkSession))))
+  (clojure.pprint/pprint (macroexpand-1 '(wx-fun checkSession)))
+
+
+  (wx-fun-dev @mini-program checkSession) ;; => #'mini-program-cljs.core/wx-check-session
+
+  (call-promise-1
+    (fn [res] (prn "----" res))
+    (wx-check-session :success (fn [res] res)))
+  ;;  Get Promise Object:  { errMsg: 'checkSession:ok' }
+  ;;  "----" #js {:errMsg "checkSession:ok"}
+  )
 (defmacro wx-fun-dev [mini-pro fname]
   `(defn ~(symbol (str "wx-" (jsname->clj (str fname))))
      [& args#]
