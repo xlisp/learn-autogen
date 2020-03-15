@@ -18,6 +18,8 @@
 
   (reset-current-page "personal")
 
+  (set-page-data #js {:title "测试测试32132"})
+
   )
 (defn reset-mini-program [automator]
   (call-promise-1
@@ -31,9 +33,15 @@
     (.callWxMethod @mini-program "navigateTo"
       #js {:url (str "/pages/" page "/" page)})
     (call-promise-1
-      (fn [page]
-        (reset! current-page page))
+      (fn [page-obj]
+        (reset! current-page page-obj))
       (.reLaunch @mini-program page))))
+
+(defn set-page-data [js-hash]
+  (call-promise-1
+    (fn [res]
+      (prn "设置页面的AppData: " res))
+    (.setData @current-page js-hash)))
 
 (comment
   (http-get-test "https://www.test.com/testjson"))
