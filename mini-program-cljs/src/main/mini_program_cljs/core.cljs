@@ -21,3 +21,13 @@
        :getUserInfo get-user-info
        :telPhone tel-phone
        :setTitle set-title})
+
+(comment
+  (.-version MPCljs) ;;=> "0.3.6"
+
+  ;; 调用了defn-js定义login函数之后:
+  (.-login MPCljs)
+  ;; => #object[mini_program_cljs$login$login]
+  )
+(def ^:export MPCljs
+  #js {:version "0.3.6"})

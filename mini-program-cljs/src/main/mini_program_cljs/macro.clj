@@ -114,6 +114,8 @@
 (comment
   (jsname->clj "offPageNotFound")
   ;; => "off-page-not-found"
+  (clj->jsname "off-page-not-found")
+  ;; => "offPageNotFound"
   )
 (defn jsname->clj [stri]
   (->>
@@ -123,6 +125,10 @@
              (if (re-find #"[A-Z]" s)
                (str "-" (str/lower-case s)) s))))
     (str/join "")))
+
+(defn clj->jsname [stri]
+  (str/replace stri #"-([a-z])"
+    #(str (str/upper-case (last %1)))))
 
 (comment
   ;; => 1. 生成函数:
@@ -165,9 +171,11 @@
 (defmacro defn-js
   "生成js导出需要的cljs函数: 用宏来包装副作用和领域特殊和不干净的东西,其他都可以按照lisp的风格来设计"
   [fun-name fun-args & body]
-  `(defn ~fun-name [^js options#]
-     (let [{:keys [~@(map symbol fun-args)]}
-           (into {}
-             (for [k# (.keys js/Object options#)]
-               [(keyword k#) (aget options# k#)]))]
-       ~@body)))
+  `(do (defn ~fun-name [^js options#]
+         (let [{:keys [~@(map symbol fun-args)]}
+               (into {}
+                 (for [k# (.keys js/Object options#)]
+                   [(keyword k#) (aget options# k#)]))]
+           ~@body))
+       (set! (~(symbol (str ".-" (clj->jsname (str fun-name))))
+              mini-program-cljs.core/MPCljs) ~fun-name)))
