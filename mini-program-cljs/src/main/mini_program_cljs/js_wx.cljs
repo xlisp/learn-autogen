@@ -12,6 +12,8 @@
 
 (def current-page (atom ""))
 
+(def export-js #js {:version "0.3.8"})
+
 (comment
   (reset-mini-program automator)
   (reset-current-page "personal")

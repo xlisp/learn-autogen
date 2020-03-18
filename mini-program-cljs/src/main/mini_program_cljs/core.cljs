@@ -7,7 +7,7 @@
     [alert switch-router set-storage-sync get-storage-sync
      tel-phone set-title]]
    [mini-program-cljs.login :refer [login get-user-info]]
-   [mini-program-cljs.js-wx :refer [mini-program current-page]]))
+   [mini-program-cljs.js-wx :refer [mini-program current-page] :as js-wx]))
 
 (def ^:export Storage
   #js {:getSync get-storage-sync
@@ -29,5 +29,4 @@
   (.-login MPCljs)
   ;; => #object[mini_program_cljs$login$login]
   )
-(def ^:export MPCljs
-  #js {:version "0.3.6"})
+(def ^:export MPCljs js-wx/export-js)

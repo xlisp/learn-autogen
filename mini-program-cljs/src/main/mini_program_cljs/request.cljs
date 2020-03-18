@@ -1,7 +1,7 @@
 (ns mini-program-cljs.request
   (:require-macros [mini-program-cljs.macro :refer [defn-js call-promise-1]])
   (:require [mini-program-cljs.util :refer [alert] :as u]
-            [mini-program-cljs.js-wx :refer [js-wx]]))
+            [mini-program-cljs.js-wx :refer [js-wx] :as jswx]))
 
 (defn set-header [headers]
   (clj->js
@@ -31,6 +31,7 @@
                   :headers (set-header {:token "aaaa"})})))
 (defn-js request
   [:url :method :data :header]
+  jswx/export-js
   (js/console.log url)
   (js/Promise.
     (fn [^js resolve ^js reject]

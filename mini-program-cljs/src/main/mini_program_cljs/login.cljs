@@ -2,7 +2,7 @@
   (:require-macros [mini-program-cljs.macro
                     :refer [defn-js call-promise-1]])
   (:require [mini-program-cljs.util :refer [alert] :as u]
-            [mini-program-cljs.js-wx :refer [js-wx]]))
+            [mini-program-cljs.js-wx :refer [js-wx] :as jswx]))
 
 ;; 微信官方接口的改变: 这个接口只能在开发环境,并且要点了用户授权button/getUserInfo之后才能用
 (defn get-user-info [success-fn fail-fn]
@@ -19,6 +19,7 @@
                 :iv "aaa" :encryptedData "bbb" })))
 (defn-js login
   [:successFn :iv :encryptedData]
+  jswx/export-js
   (js-wx "login"
     #js {:success
          (fn [^js r]

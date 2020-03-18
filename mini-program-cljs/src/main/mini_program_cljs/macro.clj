@@ -170,7 +170,7 @@
     [url method]))
 (defmacro defn-js
   "生成js导出需要的cljs函数: 用宏来包装副作用和领域特殊和不干净的东西,其他都可以按照lisp的风格来设计"
-  [fun-name fun-args & body]
+  [fun-name fun-args export-var & body]
   `(do (defn ~fun-name [^js options#]
          (let [{:keys [~@(map symbol fun-args)]}
                (into {}
@@ -178,4 +178,4 @@
                    [(keyword k#) (aget options# k#)]))]
            ~@body))
        (set! (~(symbol (str ".-" (clj->jsname (str fun-name))))
-              mini-program-cljs.core/MPCljs) ~fun-name)))
+              ~export-var) ~fun-name)))
