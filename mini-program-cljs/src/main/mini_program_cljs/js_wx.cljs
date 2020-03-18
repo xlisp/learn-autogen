@@ -35,7 +35,8 @@
 (comment
   (reset-mini-program automator)
   (reset-current-page "recharge")
-  (set-page-data #js {:title (str "测试测试3213" (js/Date.now))}))
+  (set-page-data #js {:title (str "测试测试3213" (js/Date.now))})
+  (get-page-data (fn [res] (log "Page data: " res))))
 (defn reset-mini-program [automator]
   (call-promise-1
     (fn [miniprogram]
@@ -57,6 +58,12 @@
     (fn [res]
       (prn "设置页面的AppData: " res))
     (.setData @current-page js-hash)))
+
+
+(defn get-page-data [op-fn]
+  (call-promise-1
+    op-fn
+    (.data @current-page)))
 
 (comment
   (print-class-name-wxml "recharge-button"))
