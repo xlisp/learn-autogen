@@ -2,7 +2,8 @@
   (:require-macros [mini-program-cljs.macro
                     :refer [call-promise-1 wx-fun-dev wx-fun]])
   (:require
-   [miniprogram-automator :as automator] ;; 发布的时候需要删除这一行, 用gsub去掉,发布结束后再checkout回来
+   ;; 发布的时候需要删除下面这一行, 用gsub去掉,发布结束后再checkout回来
+   [miniprogram-automator :as automator]
    [mini-program-cljs.request :refer [request]]
    [mini-program-cljs.util :refer
     [alert switch-router set-storage-sync get-storage-sync
@@ -15,12 +16,8 @@
 
 (comment
   (reset-mini-program automator)
-
   (reset-current-page "personal")
-
-  (set-page-data #js {:title "测试测试32132"})
-
-  )
+  (set-page-data #js {:title "测试测试32132"}))
 (defn reset-mini-program [automator]
   (call-promise-1
     (fn [miniprogram]
@@ -43,23 +40,11 @@
       (prn "设置页面的AppData: " res))
     (.setData @current-page js-hash)))
 
-(comment
-  (http-get-test "https://www.test.com/testjson"))
-(defn http-get-test [url]
-  (mini-program-cljs.macro/async
-    (let [response (mini-program-cljs.macro/await
-                     (js/setTimeout (fn [] (alert "定时结束")) 2000))
-          json (mini-program-cljs.macro/await #js {:data "定时器await"})]
-      (alert json)
-      (.log js/console json)
-      json)))
+;; (def ^:export Request #js {:get get :post post})
 
 (def ^:export Storage
   #js {:getSync get-storage-sync
-       :setSync set-storage-sync
-       :isRelease isRelease})
-
-;; (def ^:export Request #js {:get get :post post})
+       :setSync set-storage-sync})
 
 (def ^:export MiniCljs
   #js {:request request

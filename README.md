@@ -77,6 +77,7 @@
 * [ ] 签名,加解密和验证成功与否的工具函数或者spec解释器: spec出来具体很细的签名哪一部分错了,前端还是后端,还是排序还是大小写,缺了哪个字段等,大大减少验证签名的时间
 * [ ] 给每一个调用的前后端函数写Spec,严格化工程
 * [ ] 基于[miniprogram-automator](https://developers.weixin.qq.com/miniprogram/dev/devtools/auto/)完善ClojureScript和Shadow开发微信小程序库的流程和自动化工具,测试链(Repl式的开发体验)
+* [ ] 基于小程序的canvas画图类库: 可以快速写出"头像加国旗"类的小程序来
 
 ## Usage
 
