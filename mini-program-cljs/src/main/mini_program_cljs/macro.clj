@@ -152,3 +152,22 @@
      [& args#]
      (~(symbol (str "." fname)) js/wx
       (apply hash-map args#))))
+
+(comment
+  (clojure.pprint/pprint
+    (macroexpand-1 '(defn-js test-fun [:url :method :data :header]
+                      (do 1 2) (let [x 1] x) )))
+  ;; test in cljs:
+  (test-fun #js {:url 111 :method 222})
+  ;; => [111 222]
+  (defn-js test-fun [:url :method :data :header]
+    [url method]))
+(defmacro defn-js
+  "生成js导出需要的cljs函数: 用宏来包装副作用和领域特殊和不干净的东西,其他都可以按照lisp的风格来设计"
+  [fun-name fun-args & body]
+  `(defn ~fun-name [^js options#]
+     (let [{:keys [~@(map symbol fun-args)]}
+           (into {}
+             (for [k# (.keys js/Object options#)]
+               [(keyword k#) (aget options# k#)]))]
+       ~@body)))

@@ -1,4 +1,5 @@
 (ns mini-program-cljs.request
+  (:require-macros [mini-program-cljs.macro :refer [defn-js]])
   (:require [mini-program-cljs.util :refer [alert] :as u]
             [mini-program-cljs.js-wx :refer [js-wx]]))
 
