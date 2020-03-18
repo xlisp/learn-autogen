@@ -97,6 +97,16 @@
       (.callMethod @current-page method)
       (.callMethod @current-page method js-args))))
 
+;; 大全的模拟器方法: https://developers.weixin.qq.com/miniprogram/dev/devtools/auto/miniprogram.html
+(comment
+  (evaluate (fn [] (js/getApp))) ;; alert 出来一堆的用户登陆后的信息
+  (evaluate (fn [] (-> (js/getApp) .-globalData .-userInfo))) ;;=> 微信信息打印出来了
+  )
+(defn evaluate [code-fn]
+  (call-promise-1
+    (fn [res] (log "eval code: " res))
+    (.evaluate  @mini-program code-fn)))
+
 (comment
   (js-wx "showToast"
     #js {:title "Hello, mini-program-cljs!"
