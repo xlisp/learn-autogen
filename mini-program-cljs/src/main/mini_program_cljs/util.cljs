@@ -1,7 +1,7 @@
 (ns mini-program-cljs.util
   (:require-macros [mini-program-cljs.macro
-                    :refer [call-promise-1]])
-  (:require [mini-program-cljs.js-wx :refer [js-wx]]))
+                    :refer [call-promise-1 defn-js]])
+  (:require [mini-program-cljs.js-wx :refer [js-wx] :as jswx]))
 
 (defn jsx->clj
   [x]
@@ -15,6 +15,20 @@
          :icon "none"
          :mask false
          :duration 3000}))
+
+(comment
+  (log #js {:aaa 321321 :bbb 3321 :ccc #js {:ttt 2321 :a 1}}
+    #js {:uuiiuuiiuuii 321321 :bbb 3321 :ccc #js {:ttt 2321 :uuii 1}}))
+(defn log [& js-objs]
+  (js-wx "showToast"
+    #js {:title
+         (->> js-objs
+           (map #(.stringify js/JSON %))
+           (clojure.string/join ""))
+         :icon "none"
+         :mask false
+         :duration 5000}))
+
 (comment
   (switch-router "/pages/login/login"))
 (defn switch-router [url]
@@ -54,3 +68,12 @@
 (defn set-title [title]
   (js-wx "setNavigationBarTitle"
     #js {:title title}))
+
+(comment
+  ;; 调用CallWxMethod的时候,会返回一个promise,但是直接调用js/wx却不会
+  (call-promise-1
+    (fn [res] (alert (str (.-result res)))) ;;=> 能打印出来扫出来的码
+    (scan-code (fn [res] (alert (str res))))))
+(defn scan-code [success]
+  (js-wx "scanCode"
+    #js {:success success}))
