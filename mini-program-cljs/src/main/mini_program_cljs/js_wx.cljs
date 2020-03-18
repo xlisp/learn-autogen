@@ -6,27 +6,31 @@
   (:require
    ;; 发布的时候需要删除下面这一行, 用gsub去掉,发布结束后再checkout回来
    [miniprogram-automator :as automator]
-   [goog.object :as g]))
+   [goog.object :as g]
+   [clojure.string :as str]))
 
 (declare js-wx)
 
+(comment
+  (log #js {:aa 11} #js {:bb 22 :cc 33}))
 ;; 这个函数没办法再写到另外一个文件里面
 (defn log [& js-objs]
-  (try
-    (js-wx "showToast"
-      #js {:title
-           (->> js-objs
-             (map #(.stringify js/JSON %))
-             (clojure.string/join ""))
-           :icon "none"
-           :mask false
-           :duration 5000})
-    (catch :default e
+  (let [stri (->> js-objs
+               (map #(.stringify js/JSON %))
+               (str/join ""))]
+    (try
       (js-wx "showToast"
-        #js {:title (str js-objs)
+        #js {:title stri
+
              :icon "none"
              :mask false
-             :duration 5000}))))
+             :duration 5000})
+      (catch :default e
+        (js-wx "showToast"
+          #js {:title (str js-objs)
+               :icon "none"
+               :mask false
+               :duration 5000})))))
 
 (def mini-program (atom ""))
 
@@ -126,7 +130,8 @@
 
 (comment
   (evaluate-1 (fn [arg1]  (js/console.log arg1) ) "aaaa") ;;=> 终于控制台打印出来了
-  (c-log @mini-program "aaaa" "bbb" "cccc" "dddd")
+  (c-log @mini-program "aaaa" "bbb" "cccc"
+    #js {:aaa 111 :bb "222dsadsa" :cc #js {:ooo 11 :bb "33"}})
   )
 (defn evaluate-1
   [code-fn arg1]

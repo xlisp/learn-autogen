@@ -1,7 +1,9 @@
 (ns mini-program-cljs.util
   (:require-macros [mini-program-cljs.macro
                     :refer [call-promise-1 defn-js c-log]])
-  (:require [mini-program-cljs.js-wx :refer [js-wx] :as jswx]))
+  (:require
+   [mini-program-cljs.js-wx :refer [js-wx] :as jswx]
+   [clojure.string :as str]))
 
 (defn jsx->clj
   [x]
@@ -20,21 +22,22 @@
   (log #js {:aaa 321321 :bbb 3321 :ccc #js {:ttt 2321 :a 1}}
     #js {:uuiiuuiiuuii 321321 :bbb 3321 :ccc #js {:ttt 2321 :uuii 1}}))
 (defn log [& js-objs]
-  (try
-    (js-wx "showToast"
-      #js {:title
-           (->> js-objs
-             (map #(.stringify js/JSON %))
-             (clojure.string/join ""))
-           :icon "none"
-           :mask false
-           :duration 5000})
-    (catch :default e
+  (let [stri (->> js-objs
+               (map #(.stringify js/JSON %))
+               (str/join ""))]
+    (try
       (js-wx "showToast"
-        #js {:title (str js-objs)
+        #js {:title stri
+
              :icon "none"
              :mask false
-             :duration 5000}))))
+             :duration 5000})
+      (catch :default e
+        (js-wx "showToast"
+          #js {:title (str js-objs)
+               :icon "none"
+               :mask false
+               :duration 5000})))))
 
 (comment
   (switch-router "/pages/login/login"))
