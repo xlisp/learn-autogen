@@ -203,16 +203,12 @@
       '(c-log @mini-program "aaaa" "bbb" "cccc" "dddd"))))
 (defmacro c-log
   [mini-program & args]
-  `(evaluate-args ~mini-program
-     (fn
-       ~(vec
-          (map-indexed
-            (fn [k v]
-              (symbol (str "arg" k)))
-            args))
-       (js/console.log ~@(vec
-                           (map-indexed
-                             (fn [k v]
-                               (symbol (str "arg" k)))
-                             args))))
-     ~@args))
+  (let [bindings (vec
+                   (map-indexed
+                     (fn [k v]
+                       (symbol (str "arg" k)))
+                     args))]
+    `(evaluate-args ~mini-program
+       (fn ~bindings
+         (js/console.log ~@bindings))
+       ~@args)))
