@@ -20,14 +20,21 @@
   (log #js {:aaa 321321 :bbb 3321 :ccc #js {:ttt 2321 :a 1}}
     #js {:uuiiuuiiuuii 321321 :bbb 3321 :ccc #js {:ttt 2321 :uuii 1}}))
 (defn log [& js-objs]
-  (js-wx "showToast"
-    #js {:title
-         (->> js-objs
-           (map #(.stringify js/JSON %))
-           (clojure.string/join ""))
-         :icon "none"
-         :mask false
-         :duration 5000}))
+  (try
+    (js-wx "showToast"
+      #js {:title
+           (->> js-objs
+             (map #(.stringify js/JSON %))
+             (clojure.string/join ""))
+           :icon "none"
+           :mask false
+           :duration 5000})
+    (catch :default e
+      (js-wx "showToast"
+        #js {:title (str js-objs)
+             :icon "none"
+             :mask false
+             :duration 5000}))))
 
 (comment
   (switch-router "/pages/login/login"))

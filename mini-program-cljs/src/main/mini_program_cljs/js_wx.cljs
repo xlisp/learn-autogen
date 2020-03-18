@@ -8,6 +8,24 @@
    [miniprogram-automator :as automator]
    [goog.object :as g]))
 
+;; 这个函数没办法再写到另外一个文件里面
+(defn log [& js-objs]
+  (try
+    (js-wx "showToast"
+      #js {:title
+           (->> js-objs
+             (map #(.stringify js/JSON %))
+             (clojure.string/join ""))
+           :icon "none"
+           :mask false
+           :duration 5000})
+    (catch :default e
+      (js-wx "showToast"
+        #js {:title (str js-objs)
+             :icon "none"
+             :mask false
+             :duration 5000}))))
+
 (def mini-program (atom ""))
 
 (def current-page (atom ""))
@@ -16,8 +34,8 @@
 
 (comment
   (reset-mini-program automator)
-  (reset-current-page "personal")
-  (set-page-data #js {:title "测试测试32132"}))
+  (reset-current-page "recharge")
+  (set-page-data #js {:title (str "测试测试3213" (js/Date.now))}))
 (defn reset-mini-program [automator]
   (call-promise-1
     (fn [miniprogram]
@@ -39,6 +57,16 @@
     (fn [res]
       (prn "设置页面的AppData: " res))
     (.setData @current-page js-hash)))
+
+(comment
+  (print-class-name-wxml "recharge-button"))
+(defn print-class-name-wxml [class-name]
+  (call-promise-1
+    (fn [res]
+      (call-promise-1
+        (fn [res] (log "wxml: " res))
+        (.wxml res)))
+    (.$ @current-page (str  "." class-name))))
 
 (comment
   (js-wx "showToast"
