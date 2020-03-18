@@ -179,3 +179,40 @@
            ~@body))
        (set! (~(symbol (str ".-" (clj->jsname (str fun-name))))
               ~export-var) ~fun-name)))
+
+(comment
+  (clojure.pprint/pprint
+    (macroexpand-1
+      '(evaluate-args (fn [arg1 arg2]  (js/console.log arg1) )
+         "aaaa" "bbbb")))
+
+  ;; in js_wx file:
+  (evaluate-args @mini-program
+    (fn [arg1 arg2]  (js/console.log arg1 "," arg2)) ;=> 打印出来了 "aaaa , bbbb"
+    "aaaa" "bbbb"))
+(defmacro evaluate-args
+  "万能的eval: 再难难不倒强大的宏"
+  [mini-program code-fn & args]
+  `(call-promise-1
+     (fn [res#] (prn "eval code args: " res#))
+     (.evaluate ~mini-program ~@(cons code-fn args))))
+
+(comment
+  (clojure.pprint/pprint
+    (macroexpand-1
+      '(c-log @mini-program "aaaa" "bbb" "cccc" "dddd"))))
+(defmacro c-log
+  [mini-program & args]
+  `(evaluate-args ~mini-program
+     (fn
+       ~(vec
+          (map-indexed
+            (fn [k v]
+              (symbol (str "arg" k)))
+            args))
+       (js/console.log ~@(vec
+                           (map-indexed
+                             (fn [k v]
+                               (symbol (str "arg" k)))
+                             args))))
+     ~@args))

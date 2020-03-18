@@ -1,6 +1,6 @@
 (ns mini-program-cljs.util
   (:require-macros [mini-program-cljs.macro
-                    :refer [call-promise-1 defn-js]])
+                    :refer [call-promise-1 defn-js c-log]])
   (:require [mini-program-cljs.js-wx :refer [js-wx] :as jswx]))
 
 (defn jsx->clj

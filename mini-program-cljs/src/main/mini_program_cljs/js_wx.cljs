@@ -2,11 +2,13 @@
   "处理js/wx和微信开发者模拟器对象相关的方法: 其他地方需要引用这里的mini-program和current-page对象,在repl开发测试的时候"
   (:require-macros
    [mini-program-cljs.macro
-    :refer [call-promise-1 wx-fun-dev wx-fun]])
+    :refer [call-promise-1 wx-fun-dev wx-fun evaluate-args c-log]])
   (:require
    ;; 发布的时候需要删除下面这一行, 用gsub去掉,发布结束后再checkout回来
    [miniprogram-automator :as automator]
    [goog.object :as g]))
+
+(declare js-wx)
 
 ;; 这个函数没办法再写到另外一个文件里面
 (defn log [& js-objs]
@@ -101,11 +103,36 @@
 (comment
   (evaluate (fn [] (js/getApp))) ;; alert 出来一堆的用户登陆后的信息
   (evaluate (fn [] (-> (js/getApp) .-globalData .-userInfo))) ;;=> 微信信息打印出来了
+  (evaluate (fn [] (.setStorageSync js/wx "test" "dsadasdsa"))) ;; 无效,还是要CallWxMethod才行
+  (evaluate (fn [] js/wx))
+  ;; ===>>>
+  ;;{ env: { USER_DATA_PATH: 'http://usr' },
+  ;;  error:
+  ;;   { OK: 0,
+  ;;     Global_APINoPermission: 10012,
+  ;;     Global_APINoAuthorization: 10022,
+  ;;     Global_FileStorageNotEnough: 10031,
+  ;;     Render_CanvasIllegalInvocation: 13013,
+  ;;     Render_FontFileInvalid: 13023,
+  ;;     Render_ImageLoadFailed: 13033,
+  ;;     Network_RequestTimeout: 14012,
   )
-(defn evaluate [code-fn]
+(defn evaluate
+  "往 AppService 注入代码片段并返回执行结果"
+  [code-fn]
   (call-promise-1
     (fn [res] (log "eval code: " res))
     (.evaluate  @mini-program code-fn)))
+
+(comment
+  (evaluate-1 (fn [arg1]  (js/console.log arg1) ) "aaaa") ;;=> 终于控制台打印出来了
+  (c-log @mini-program "aaaa" "bbb" "cccc" "dddd")
+  )
+(defn evaluate-1
+  [code-fn arg1]
+  (call-promise-1
+    (fn [res] (log "eval code 1: " res))
+    (.evaluate  @mini-program code-fn arg1)))
 
 (comment
   (js-wx "showToast"
