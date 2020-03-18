@@ -158,7 +158,7 @@
     (macroexpand-1 '(defn-js test-fun [:url :method :data :header]
                       (do 1 2) (let [x 1] x) )))
   ;; test in cljs:
-  (test-fun #js {:url 111 :method 222})
+  ;; (test-fun #js {:url 111 :method 222})
   ;; => [111 222]
   (defn-js test-fun [:url :method :data :header]
     [url method]))
