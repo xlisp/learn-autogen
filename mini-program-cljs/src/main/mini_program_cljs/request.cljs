@@ -1,5 +1,6 @@
 (ns mini-program-cljs.request
-  (:require [mini-program-cljs.util :refer [alert] :as u]))
+  (:require [mini-program-cljs.util :refer [alert] :as u]
+            [mini-program-cljs.js-wx :refer [js-wx]]))
 
 (defn set-header [headers]
   (clj->js
@@ -12,7 +13,7 @@
     (js/console.log url)
     (js/Promise.
       (fn [^js resolve ^js reject]
-        (.request js/wx
+        (js-wx "request"
           #js {:url url
                :method method
                :data data
