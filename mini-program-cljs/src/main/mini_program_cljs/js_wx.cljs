@@ -34,7 +34,9 @@
 
 (comment
   (reset-mini-program automator)
-  (reset-current-page "recharge")
+  (reset-current-page)
+
+  (reset-page "recharge")
   (set-page-data #js {:title (str "测试测试3213" (js/Date.now))})
   (get-page-data (fn [res] (log "Page data: " res))))
 (defn reset-mini-program [automator]
@@ -44,7 +46,14 @@
     (.connect automator
       #js {:wsEndpoint "ws://localhost:9420"})))
 
-(defn reset-current-page [page]
+(defn reset-current-page []
+  (call-promise-1
+    (fn [page-obj]
+      (prn "当前页面为: " (.-path page-obj))
+      (reset! current-page page-obj))
+    (.currentPage @mini-program)))
+
+(defn reset-page [page]
   (do
     (.callWxMethod @mini-program "navigateTo"
       #js {:url (str "/pages/" page "/" page)})
@@ -58,7 +67,6 @@
     (fn [res]
       (prn "设置页面的AppData: " res))
     (.setData @current-page js-hash)))
-
 
 (defn get-page-data [op-fn]
   (call-promise-1
@@ -74,6 +82,20 @@
         (fn [res] (log "wxml: " res))
         (.wxml res)))
     (.$ @current-page (str  "." class-name))))
+
+(comment
+  (call-page-method
+    "wxPay"
+    #js {}
+    (fn [res] (log "----" res))))
+(defn call-page-method
+  "调用小程序Page({})内部的方法"
+  [method js-args op-fn]
+  (call-promise-1
+    op-fn
+    (if (nil? js-args)
+      (.callMethod @current-page method)
+      (.callMethod @current-page method js-args))))
 
 (comment
   (js-wx "showToast"
