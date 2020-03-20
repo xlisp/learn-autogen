@@ -9,7 +9,7 @@
     :as util]
    [mini-program-cljs.login :refer [login get-user-info]]
    [mini-program-cljs.js-wx :refer [mini-program current-page] :as js-wx]
-   [mini-program-cljs.components.timer :refer [timer-component]]))
+   [mini-program-cljs.components.timer :as timer]))
 
 (def ^:export Storage
   #js {:getSync get-storage-sync
@@ -24,7 +24,7 @@
        :telPhone tel-phone
        :setTitle set-title
        :getCurrentPage util/get-current-page
-       :timerComponent timer-component})
+       :timerComponent timer/timer-component})
 
 (comment
   (.-version MPCljs) ;;=> "0.3.6"

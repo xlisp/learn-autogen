@@ -1,8 +1,9 @@
 (ns mini-program-cljs.components.timer)
 
 (comment
-  (timer-component 10 @mini-program-cljs.js-wx/current-page))
-(defn timer-component [time self]
+  ;; (timer-component 10 @mini-program-cljs.js-wx/current-page)
+  )
+(defn timer-component [time ^js self]
   (do
     (.setData self #js {:timeNumber time
                         :timerIsStop nil})
