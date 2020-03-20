@@ -44,7 +44,7 @@
 (comment
   (switch-router "/pages/login/login"))
 (defn switch-router [url]
-  (if (= (get-current-route) url)
+  (if (= (str "/" (get-current-route)) url)
     (js/console.log "在当前页面,不需要跳转")
     (js-wx "navigateTo"
       #js {:url url})))
@@ -99,8 +99,9 @@
         current-page (aget pages (dec len))]
     current-page))
 
-(defn get-current-route [current-page]
-  (.-route current-page))
+;; 凡是js对象传入,都要加个^js,不让编译器release改名字: 尤其是复杂js对象
+(defn get-current-route []
+  (.-route (get-current-page)))
 
-(defn get-current-options [current-page]
+(defn get-current-options [^js current-page]
   (.-options current-page))
