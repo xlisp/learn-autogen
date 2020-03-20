@@ -5,7 +5,8 @@
    [mini-program-cljs.request :refer [request]]
    [mini-program-cljs.util :refer
     [alert switch-router set-storage-sync get-storage-sync
-     tel-phone set-title]]
+     tel-phone set-title]
+    :as util]
    [mini-program-cljs.login :refer [login get-user-info]]
    [mini-program-cljs.js-wx :refer [mini-program current-page] :as js-wx]))
 
@@ -20,7 +21,8 @@
        :switchRouter switch-router
        :getUserInfo get-user-info
        :telPhone tel-phone
-       :setTitle set-title})
+       :setTitle set-title
+       :getCurrentPage util/get-current-page})
 
 (comment
   (.-version MPCljs) ;;=> "0.3.6"

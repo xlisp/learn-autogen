@@ -39,11 +39,15 @@
                :mask false
                :duration 5000})))))
 
+(declare get-current-route)
+
 (comment
   (switch-router "/pages/login/login"))
 (defn switch-router [url]
-  (js-wx "navigateTo"
-    #js {:url url}))
+  (if (= (get-current-route) url)
+    (js/console.log "在当前页面,不需要跳转")
+    (js-wx "navigateTo"
+      #js {:url url})))
 
 (comment
   ;; 不知为何无效
@@ -87,3 +91,16 @@
 (defn scan-code [success]
   (js-wx "scanCode"
     #js {:success success}))
+
+;; Page内部或者util里面才能执行成功的方法, 或者再控制台也能执行成功
+(defn get-current-page []
+  (let [pages (js/getCurrentPages)
+        len (.-length pages)
+        current-page (aget pages (dec len))]
+    current-page))
+
+(defn get-current-route [current-page]
+  (.-route current-page))
+
+(defn get-current-options [current-page]
+  (.-options current-page))

@@ -125,7 +125,7 @@
   "往 AppService 注入代码片段并返回执行结果"
   [code-fn]
   (call-promise-1
-    (fn [res] (log "eval code: " res))
+    (fn [res] (c-log @mini-program "eval code: " res))
     (.evaluate  @mini-program code-fn)))
 
 (comment
@@ -136,7 +136,7 @@
 (defn evaluate-1
   [code-fn arg1]
   (call-promise-1
-    (fn [res] (log "eval code 1: " res))
+    (fn [res] (c-log @mini-program "eval code 1: " res))
     (.evaluate  @mini-program code-fn arg1)))
 
 (comment
