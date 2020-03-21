@@ -39,15 +39,15 @@
                :mask false
                :duration 5000})))))
 
-(declare get-current-route)
-
 (comment
   (switch-router "/pages/login/login"))
 (defn switch-router [url]
-  (if (= (str "/" (get-current-route)) url)
-    (js/console.log "在当前页面,不需要跳转")
-    (js-wx "navigateTo"
-      #js {:url url})))
+  ;; (if (= (str "/" (get-current-route)) url)
+  ;;   (js/console.log "在当前页面,不需要跳转")
+  ;;   (js-wx "navigateTo"
+  ;;     #js {:url url}))
+  (js-wx "navigateTo"
+    #js {:url url}))
 
 (comment
   ;; 不知为何无效
