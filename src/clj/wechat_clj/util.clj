@@ -1,5 +1,8 @@
 (ns wechat-clj.util
-  (:require [clojure.xml])
+  (:require [clojure.xml]
+            [buddy.core.hash :as hash]
+            [buddy.core.codecs :refer [bytes->hex]]
+            [clojure.string :as str])
   (:import [wechat_clj JavaHelper]))
 
 (defn sha1 [stri]
@@ -34,3 +37,12 @@
     (->> subs-list
       (map #(subs out-trade-no (first %) (last %)))
       (clojure.string/join "-"))))
+
+(defn gen-signature
+  [payload secret-key]
+  (let [url-str (->> (sort-by first payload)
+                  (map (partial str/join "="))
+                  (str/join "&"))
+        url-str (str url-str "&key=" secret-key)
+        sig (str/upper-case (bytes->hex (hash/md5 url-str)))]
+    sig))
