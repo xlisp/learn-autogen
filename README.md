@@ -83,7 +83,7 @@
 
 * Clojure(Script)前后端库[wechat-clj](https://clojars.org/wechat-clj)
 ```clojure
-[wechat-clj "0.2.2-SNAPSHOT"]
+[wechat-clj "0.2.3"]
 ```
 * [微信小程序的cljs库mini-program-cljs](https://www.npmjs.com/package/mini-program-cljs): 安装`mini-program-cljs`
 
