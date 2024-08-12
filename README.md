@@ -16,7 +16,6 @@ function_map not effect, you must use this way , like this:
 '''python
 @user_proxy.register_for_execution()
 @chatbot.register_for_llm(description="Calculate distance between two addresses.")
-@observe()
 def calculate_distance(
     start_address: Annotated[str, "Starting address"],
     end_address: Annotated[str, "Destination address"],
