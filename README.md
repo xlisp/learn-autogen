@@ -103,3 +103,8 @@ user_proxy.initiate_chat(
     message=task
 )
 ```
+
+## More examples
+
+https://github.com/chanshunli/learn-autogen/tree/main/autogen_examples
+
