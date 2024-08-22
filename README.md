@@ -79,5 +79,27 @@ def calculate_distance(
 ```
 ## ReAct Definition
 ```python
-# TODO
+from autogen import AssistantAgent, UserProxyAgent, ConversableAgent
+import os
+
+assistant = AssistantAgent(
+    name="assistant",
+    llm_config={
+        "config_list": [{"model": "gpt-4o", "api_key": os.environ.get("OPENAI_API_KEY")}]
+    }
+)
+
+user_proxy = UserProxyAgent(
+    name="user_proxy",
+    human_input_mode="NEVER",
+    max_consecutive_auto_reply=10,
+    code_execution_config={"work_dir": "coding"}
+)
+
+task = "Analyze the following data and create a visualization: [Your data is  current path all log file]"
+
+user_proxy.initiate_chat(
+    assistant,
+    message=task
+)
 ```
