@@ -31,7 +31,7 @@ content_creator = autogen.AssistantAgent(
     system_message="""
         You are a professional writer known for insightful and engaging articles.
         You can transform complex concepts into compelling narratives.
-        When everything is complete, please reply with 'End'.
+        When everything is complete, please reply with 'TERMINATE'.
         """,
 )
 
@@ -39,7 +39,7 @@ content_creator = autogen.AssistantAgent(
 user_proxy_auto = autogen.UserProxyAgent(
     name="User Proxy_Auto",
     human_input_mode="NEVER",
-    is_termination_msg=lambda x: x.get("content", "") and x.get("content", "").rstrip().endswith("End"),
+    is_termination_msg=lambda x: x.get("content", "") and x.get("content", "").rstrip().endswith("TERMINATE"),
     code_execution_config={
         "last_n_messages": 1,
         "work_dir": "tasks",
@@ -50,7 +50,7 @@ user_proxy_auto = autogen.UserProxyAgent(
 user_proxy = autogen.UserProxyAgent(
     name="User Proxy",
     human_input_mode="ALWAYS",
-    is_termination_msg=lambda x: x.get("content", "") and x.get("content", "").rstrip().endswith("End"),
+    is_termination_msg=lambda x: x.get("content", "") and x.get("content", "").rstrip().endswith("TERMINATE"),
     code_execution_config={
         "last_n_messages": 1,
         "work_dir": "tasks",
