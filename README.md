@@ -1,5 +1,14 @@
 # Learn AutoGen
 
+- [Learn AutoGen](#learn-autogen)
+  - [Class Relationship](#class-relationship)
+  - [Basic Definition](#basic-definition)
+  - [Tools Definition](#tools-definition)
+  - [ReAct Definition](#react-definition)
+  - [Chats Group: initiate_chats](#chats-group-initiate_chats)
+  - [More examples](#more-examples)
+
+
 ## Class Relationship
 
 look full graph: [autogen_class_refs.pdf](./autogen_class_refs.pdf)
