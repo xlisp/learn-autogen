@@ -75,8 +75,6 @@ main(question)
 ```
 ## Tools Definition
 ```python
-function_map not effect, you must use this way , like this:
-'''python
 @user_proxy.register_for_execution()
 @chatbot.register_for_llm(description="Calculate distance between two addresses.")
 def calculate_distance(
@@ -84,7 +82,7 @@ def calculate_distance(
     end_address: Annotated[str, "Destination address"],
 ) -> str:
       .... function detail ....
-'''
+
 ```
 ## ReAct Definition
 ```python
