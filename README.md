@@ -7,7 +7,9 @@
   - [ReAct Definition](#react-definition)
   - [Chats Group: initiate_chats](#chats-group-initiate_chats)
   - [More examples](#more-examples)
-  - [summarize single task](#summarize-single-task)
+  - [Summarize single task](#summarize-single-task)
+  - [Manual call tool and check chat history](#manual-call-tool-and-check-chat-history)
+  - [More examples](#more-examples)
 
 ## Class Relationship
 
@@ -246,6 +248,64 @@ user_proxy.initiate_chat(
     assistant,
     message=task
 )
+```
+
+## Manual call tool and check chat history
+
+```python
+def main(question):
+    chat_history = []
+    while True:
+        print(f"Sending message to chatbot: {question}")
+        response = user_proxy.initiate_chat(
+            chatbot,
+            message=question,
+            clear_history=False
+        )
+
+        print(f"Received response: {response}")
+
+        if response.chat_history:
+            last_message = response.chat_history[-1]
+            chat_history.append(last_message)
+            print(f"Last message: {last_message}")
+
+            if last_message.get('tool_calls'):
+                print("Function call detected, executing...")
+                tool_call = last_message['tool_calls'][0]
+                function_name = tool_call['function']['name']
+                function_args = tool_call['function']['arguments']
+                print(f"Function to call: {function_name}")
+                print(f"Function arguments: {function_args}")
+
+                # Execute the function
+                if function_name == 'get_screen_question':
+                    result = get_screen_question()
+                elif function_name == 'select_answer':
+                    import json
+                    args = json.loads(function_args)
+                    result = select_answer(args['answer'])
+                else:
+                    result = "Unknown function"
+
+                # Prepare the tool response message
+                tool_response = {
+                    "tool_call_id": tool_call['id'],
+                    "role": "tool",
+                    "name": function_name,
+                    "content": result
+                }
+
+                # Send the tool response back to the chatbot
+                question = f"Tool response: {json.dumps(tool_response)}"
+            else:
+                print("No function call detected, terminating...")
+                break
+        else:
+            print("No messages in the response, terminating...")
+            break
+
+    return chat_history
 ```
 
 ## More examples
