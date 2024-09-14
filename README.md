@@ -9,6 +9,7 @@
   - [More examples](#more-examples)
   - [Summarize single task](#summarize-single-task)
   - [Manual call tool and check chat history](#manual-call-tool-and-check-chat-history)
+  - [Use class define a agent](#use-class-define-a-agent)
   - [More examples](#more-examples)
 
 ## Class Relationship
@@ -248,6 +249,25 @@ user_proxy.initiate_chat(
     assistant,
     message=task
 )
+```
+
+## Use class define a agent
+
+```python
+class CodeSummarizerAgent(AssistantAgent):
+    def __init__(self, name):
+        super().__init__(name=name)
+        self.system_prompt = "You are a code summarizer. Summarize the given code and test results."
+
+    def summarize(self, code, test_results):
+        prompt = f"Summarize the following code and test results:\n\nCode:\n{code}\n\nTest Results:\n{test_results}"
+        response = self.chat(prompt)
+        summary = response.content
+        return summary
+
+code_summarizer = CodeSummarizerAgent(name="CodeSummarizer")
+summary = code_summarizer.summarize(code, test_results)
+
 ```
 
 ## Manual call tool and check chat history
