@@ -3,7 +3,7 @@
 * Learn autogen step by step, multi agent design guide
 
 
-[![Watch the video](https://i.sstatic.net/Vp2cE.png)](https://youtu.be/RkgwIOEIoNw)
+[![Watch the video](./jiaxiao_pyautogui_app/jiaxiao.JPG)](https://youtu.be/RkgwIOEIoNw)
 
 
 - [Learn AutoGen](#learn-autogen)
