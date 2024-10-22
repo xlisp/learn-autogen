@@ -2,7 +2,9 @@
 
 * Learn autogen step by step, multi agent design guide
 
-[https://youtu.be/RkgwIOEIoNw](https://youtu.be/RkgwIOEIoNw)
+
+[![Watch the video](https://i.sstatic.net/Vp2cE.png)](https://youtu.be/RkgwIOEIoNw)
+
 
 - [Learn AutoGen](#learn-autogen)
   - [Class Relationship](#class-relationship)
