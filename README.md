@@ -16,8 +16,9 @@
   - [Summarize single task](#summarize-single-task)
   - [Manual call tool and check chat history](#manual-call-tool-and-check-chat-history)
   - [Use class define a agent](#use-class-define-a-agent)
-  - [More examples](#more-examples)
   - [Async run agent](#async-run-agent)
+  - [Use other llm](#use-other-llm)
+  - [More examples](#more-examples)
 
 ## Class Relationship
 
@@ -371,6 +372,69 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+  
+## Use other llm
+
+```python
+# OpenRouter API configuration
+OPENROUTER_API_KEY = os.environ['OPENROUTER_API_KEY']
+
+class OpenRouterLLM:
+    def __init__(self, model="openai/gpt-4o-2024-08-06"):
+        self.model = model
+
+    def create_completion(self, messages):
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENROUTER_API_KEY}"
+            },
+            data=json.dumps({
+                "model": self.model,
+                "messages": messages,
+                "max_tokens": 4000,
+                "temperature": 0.7,
+            })
+        )
+        return response.json()
+
+llm = OpenRouterLLM()
+
+# ---- 
+class CustomAssistantAgent(autogen.AssistantAgent):
+    def generate_reply(self, sender=None, messages=None):
+        if messages is None:
+            messages = self._oai_messages
+
+        if not messages:
+            return None
+
+        system_message = self.system_message
+
+        last_message = messages[-1]
+        if isinstance(last_message, dict):
+            last_message_content = last_message.get('content', '')
+        else:
+            last_message_content = str(last_message)
+
+        api_messages = create_messages(system_message, last_message_content)
+        response = llm.create_completion(api_messages)
+
+        try:
+            reply = response['choices'][0]['message']['content']
+            if self.name == "narrative_writer":
+                novel_progress.add_content(reply)
+            return reply
+        except KeyError:
+            return "I apologize, but I encountered an error processing your request."
+
+story_planner = CustomAssistantAgent(
+    name="story_planner",
+    system_message=story_planner_config["system_message"]
+)
+
+```
+
 ## More examples
 
 https://github.com/chanshunli/learn-autogen/tree/main/autogen_examples
