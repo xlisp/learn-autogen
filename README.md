@@ -440,4 +440,5 @@ story_planner = CustomAssistantAgent(
 * https://github.com/xlisp/novelist-agent
 * https://github.com/xlisp/learn-autogen/tree/master/autogen_examples
 * https://github.com/xlisp/learn-autogen/tree/master/jiaxiao_pyautogui_app
+* https://github.com/xlisp/aippt-agent
 
